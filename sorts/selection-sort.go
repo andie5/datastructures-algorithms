@@ -24,34 +24,28 @@ func main() {
 	log.Println(args)
 	list := args[1:]
 
-	sortedList := []int32{}
-
 	// Get len of list (n)
 	length := len(list)
 
 	// covert string arr to ints
-	unsortedList := []int32{}
+	finalList := []int32{}
 	for _, item := range list {
 		value, _ := strconv.ParseInt(item, 0, 16)
-		unsortedList = append(unsortedList, int32(value))
+		finalList = append(finalList, int32(value))
 	}
 
-	//Starts here
 	for i := 0; i < length; i++ {
-		min, position, err := getMinAndPosition(unsortedList, i, length)
+		min, position, err := getMinAndPosition(finalList, i, length)
 		if err != nil {
 			return
 		}
 
 		if position != i {
-			unsortedList[position] = unsortedList[i]
-			unsortedList[i] = min
+			finalList[position] = finalList[i]
+			finalList[i] = min
 		}
-		sortedList = append(sortedList, min)
 	}
-
-	log.Println("sortedList final: ", sortedList)
-
+	log.Println("finalList: ", finalList)
 }
 
 // getMinAndPosition gets the minimum number and returns the position its found at
