@@ -1,10 +1,8 @@
-package main
+package sorts
 
 import (
 	"errors"
 	"log"
-	"os"
-	"strconv"
 )
 
 // Pseudocode
@@ -18,34 +16,23 @@ import (
 // Move minimum number to pointer position, update their positions in the array
 // Repeat until n
 
-func main() {
-
-	args := os.Args
-	log.Println(args)
-	list := args[1:]
+func SelectionSort(list []int32) {
 
 	// Get len of list (n)
 	length := len(list)
 
-	// covert string arr to ints
-	finalList := []int32{}
-	for _, item := range list {
-		value, _ := strconv.ParseInt(item, 0, 16)
-		finalList = append(finalList, int32(value))
-	}
-
 	for i := 0; i < length; i++ {
-		min, position, err := getMinAndPosition(finalList, i, length)
+		min, position, err := getMinAndPosition(list, i, length)
 		if err != nil {
 			return
 		}
 
 		if position != i {
-			finalList[position] = finalList[i]
-			finalList[i] = min
+			list[position] = list[i]
+			list[i] = min
 		}
 	}
-	log.Println("finalList: ", finalList)
+	log.Println("sorted list via selection sort: ", list)
 }
 
 // getMinAndPosition gets the minimum number and returns the position its found at

@@ -1,10 +1,6 @@
-package main
+package sorts
 
-import (
-	"log"
-	"os"
-	"strconv"
-)
+import "log"
 
 // Get len of list (n)
 // Start at pointer( pos = 0), this is start of sorted list
@@ -16,25 +12,12 @@ import (
 // Repeat inner loop steps above 3a-c
 // Repeat steps 3 and 4 until pos == n
 
-func main() {
+func InsertionSort(list []int32) {
 
-	args := os.Args
-	log.Println(args)
-	list := args[1:]
-
-	// covert string arr to ints
-	finalList := []int32{}
-	for _, item := range list {
-		value, _ := strconv.ParseInt(item, 0, 16)
-		finalList = append(finalList, int32(value))
-	}
-	sortList(finalList)
-}
-
-func sortList(list []int32) {
 	// Get len of list (n)
 	length := len(list)
 
+	// Start at pointer(position = 0), this is start of sorted list
 	current := list[0]
 	for i := 1; i < length; i++ {
 		// Compare with predecessor and swap if not in correct order
@@ -55,4 +38,5 @@ func sortList(list []int32) {
 		}
 		current = list[i]
 	}
+	log.Println("sorted list via insertion sort: ", list)
 }

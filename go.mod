@@ -1,3 +1,3 @@
-module golang.org/x/sorts
+module github.com/datastructure-algorithms
 
 go 1.16
