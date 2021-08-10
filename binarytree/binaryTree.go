@@ -42,10 +42,11 @@ func main() {
 
 	// Get length of list
 	length := len(list)
+	var tree BinaryNode
 
 	if length > 0 {
 		// Create base case node
-		tree := createNode(list[0])
+		tree = createNode(list[0])
 		fmt.Println("tree: ", tree)
 
 		// Loop through the rest of the list and create nodes
@@ -54,21 +55,29 @@ func main() {
 			fmt.Println("tree so far:", tree)
 		}
 	}
-	// findNodeInTree(tree, int32(5))
+	fmt.Println("================")
+	fmt.Println("================")
 
+	updatedTree := deleteNode(&tree, 23)
+	fmt.Println("updatedTree: ", updatedTree)
+
+	// fmt.Println("Is node in tree: ", findNodeInTree(&tree, int32(23)))
 }
 
 //findNodeInTree finds a node in the binaryTree given a value
 func findNodeInTree(binaryTree *BinaryNode, value int32) *BinaryNode {
 	// Set current node to parent node
 	current := binaryTree
+	fmt.Println("value to check: ", value)
 
-	for current.LeftPtr != nil && current.RightPtr != nil {
+	for current != nil {
 		if current.Value == value {
 			return current
-		} else if current.Value < value {
+		} else if value <= current.Value {
+			fmt.Println("value less: ", current.Value)
 			current = current.LeftPtr
 		} else {
+			fmt.Println("value more: ", current.Value)
 			current = current.RightPtr
 		}
 	}
@@ -101,19 +110,27 @@ func findNodeInTree(binaryTree *BinaryNode, value int32) *BinaryNode {
 // return if the key is not found in the tree
 func deleteNode(binaryTree *BinaryNode, value int32) *BinaryNode {
 
+	if binaryTree == nil {
+		return binaryTree
+	}
+
 	var parent BinaryNode
 
 	// start with root
 	current := binaryTree
+	fmt.Println("in delete node")
 
 	for current != nil {
 		// update the parent to the current node
 		parent = *current
 
+		fmt.Println("current val: ", value)
 		// If value is found at at current node
 		if current.Value == value {
+			fmt.Println("value found: ", current.Value)
 			//If there is no children...
 			if current.LeftPtr == nil && current.RightPtr == nil {
+				fmt.Println("no children")
 				// if the node to be deleted is not a root node, then set its parent left/right child to null
 				if current != binaryTree {
 					if parent.LeftPtr == current {
@@ -126,24 +143,28 @@ func deleteNode(binaryTree *BinaryNode, value int32) *BinaryNode {
 				}
 			} else if current.LeftPtr != nil && current.RightPtr != nil { //Case 2: node to be deleted has both children
 				// if the node to be deleted is not a root node, then set its parent left/right
+				fmt.Println("both children left side: ", current.LeftPtr.Value)
+				fmt.Println("both children right side: ", current.RightPtr.Value)
 				if current != binaryTree {
-					current.LeftPtr.RightPtr = current.LeftPtr
-					current = current.LeftPtr
-
+					// current.LeftPtr.RightPtr = current.LeftPtr
+					// current = current.LeftPtr
+					current.LeftPtr = deleteNode(current.LeftPtr, value)
+					current.RightPtr = deleteNode(current.RightPtr, value)
 				} else { // if the node to be deleted is a root node, then set the root to the child
-					current.LeftPtr.RightPtr = current.LeftPtr
+					current.LeftPtr.RightPtr = current.RightPtr
 					current = current.LeftPtr
-					deleteNode(current, value)
 				}
-
 			} else { // Case 3: node to be deleted has only one child
 				node := &BinaryNode{}
+				fmt.Println("one child: ", current.RightPtr.Value)
 				if current.LeftPtr != nil {
-					node = current.LeftPtr
+					// node = current.LeftPtr
+					current = current.LeftPtr
 				} else {
 					node = current.RightPtr
 				}
 				if current != binaryTree {
+
 					if parent.LeftPtr == current {
 						parent.LeftPtr = node
 					} else { // if the node to be deleted is not a root node, set its parent
@@ -156,7 +177,11 @@ func deleteNode(binaryTree *BinaryNode, value int32) *BinaryNode {
 				}
 			}
 		}
-
+		if value <= current.Value {
+			current = deleteNode(current.LeftPtr, value)
+		} else {
+			current = deleteNode(current.RightPtr, value)
+		}
 	}
 	return current
 }

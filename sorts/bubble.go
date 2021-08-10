@@ -21,9 +21,7 @@ func BubbleSort(list []int32) {
 		swap = false
 		for i := 0; i < length-1; i++ {
 			if list[i] > list[i+1] {
-				current := list[i]
-				list[i] = list[i+1]
-				list[i+1] = current
+				list[i], list[i+1] = list[i+1], list[i]
 				swap = true
 			}
 		}
